@@ -1,17 +1,20 @@
 package main
 
 import (
-	"fmt"
+	"net/http"
 
-	"github.com/sirupsen/logrus"
+	"github.com/gin-gonic/gin"
 )
 
-func main() {
-	name := "Go Developers"
-	fmt.Println("TEST", name)
-	l := logrus.New()
+func LoginPage(c *gin.Context) {
+	c.HTML(http.StatusOK, "login.html", nil)
+}
 
-	l.Info("This is an info")
-	l.Warn("This is a warning")
-	l.Error("This is an error")
+func main() {
+	server := gin.Default()
+	server.LoadHTMLGlob("template/html/*")
+	//設定靜態資源的讀取
+	server.Static("/assets", "./template/assets")
+	server.GET("/login", LoginPage)
+	server.Run(":8888")
 }
